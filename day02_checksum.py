@@ -34,10 +34,13 @@ TEST_INPUT2 = """5 9 2 8
 3 8 6 5"""
 
 def row_even_div(row: List[int])-> int:
+    """ For each row that are exactly 2 values
+    that are divisible, return the quotient
+    """
     row_permutations = itertools.permutations(row, 2)
-    for x, y in row_permutations:
-        if x % y == 0:
-            return x // y 
+    even_div = [x // y for x, y in row_permutations if x % y == 0]
+    assert len(even_div) == 1
+    return even_div[0]
 
 def spreadsheet_evendiv(string: str) -> int:
     rows = [process_row(row) for row in string.split('\n') if row]
