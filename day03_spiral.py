@@ -2,10 +2,12 @@
 https://adventofcode.com/2017/day/3
 """
 
-# not fully from scracth; checked Joel Grus implementation as I was stuck
+# I've had to checked Joel Grus implementation as I was stuck in part 1 and part 2
 
-from typing import Tuple
+from typing import Tuple, List, Iterator
+from collections import defaultdict
 import math
+import itertools
 
 def corner_odd_square(num: int)-> int:
     """"
@@ -31,7 +33,11 @@ assert corner_odd_square(49) == 7
 def find_coordinates(num: int) -> Tuple[int, int]:
     """
     Returns the coordinates of num within the spiral
+    defaults to (0,0) if negative num is provided.
     """
+    # num has to be positive
+    num = max((num, 1))
+
     sqrt_num = corner_odd_square(num)
     square = sqrt_num ** 2
 
@@ -44,20 +50,21 @@ def find_coordinates(num: int) -> Tuple[int, int]:
     if square == num:
         return x, y
     # if num is on 1st vertical section after corner
-    if num <= side_len + square:
+    elif num <= side_len + square:
         excess = num - square 
         return (x + 1, y - excess + 1)
     # if num is on 1st horizontal section
-    if num <= 2 * side_len + square:
+    elif num <= 2 * side_len + square:
         excess = num - square - side_len
         return (x + 1 - excess, y - side_len + 1)
     # if num  is on 2nd vertical section
-    if num <= 3 * side_len + square:
+    elif num <= 3 * side_len + square:
         excess = num - square - 3 * side_len
         return (x - side_len + 1, y + 1 + excess)
     # num is on last section leading to next corner
-    excess = num - square - 4 * side_len
-    return (x + 1 + excess, y + 1)
+    else:
+        excess = num - square - 4 * side_len
+        return (x + 1 + excess, y + 1)
 
 assert find_coordinates(25) == (2, 2)
 assert find_coordinates(9) == (1, 1)
@@ -82,12 +89,52 @@ def manhattan_dis(coordinates: Tuple[int, int]) -> int:
     x, y = coordinates
     return abs(x) + abs(y)
 
+assert manhattan_dis((0,0)) == 0
+assert manhattan_dis((0,-10)) == 10
+
+assert(manhattan_dis(find_coordinates(1024))) == 31
+assert(manhattan_dis(find_coordinates(23))) == 2
+
+# work on the type checking below
+def get_adjacent_squares(loc: Tuple[int, int]) -> Iterator[Tuple[int, int]]:
+    """
+    Give a location generates the adjacent squares locoations
+    """
+    x, y = loc
+
+    adjacent = [(x - 1, y), (x + 1, y), (x , y -1), (x, y + 1), 
+                (x - 1, y - 1), (x + 1, y + 1), 
+                (x - 1, y + 1), (x + 1, y - 1) ]
+    for square in adjacent:
+        yield square
+
+def first_value_written_larger(num:int) -> int:
+    """
+    Returns first value written larger then num
+    """
+    values = defaultdict(int)
+    values[(0,0)] = 1
+    
+    for count in itertools.count(2):
+        loc = find_coordinates(count)
+        sum_adjacent = sum(values[loc] for loc in get_adjacent_squares(loc))
+        values[loc] = sum_adjacent 
+        if sum_adjacent > num:
+            break
+    return sum_adjacent
+
+assert first_value_written_larger(2) == 4
+assert first_value_written_larger(11) == 23
+assert first_value_written_larger(747) == 806
+
+
 PUZZLE_INPUT = 265149
 
 if __name__ == "__main__":
     coordinates = find_coordinates(PUZZLE_INPUT)
     print(manhattan_dis(coordinates)) 
-    
+    print(first_value_written_larger(PUZZLE_INPUT))
+
 
 
 

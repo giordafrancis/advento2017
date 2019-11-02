@@ -19,7 +19,7 @@ assert is_valid_passphrase("aa bb cc dd aaa") == True
 
 def total_valid_passphrases(inputs:List[str]) -> int:
     return sum(is_valid_passphrase(passphrase) for passphrase in inputs.split("\n") 
-    if passphrase)
+                if passphrase)
 
 # PART 2
 
@@ -41,7 +41,7 @@ assert is_not_anagram("oiii ioii iioi iiio") == False
 
 def total_valid_passphrases2(inputs:List[str]) -> int:
     return sum(is_not_anagram(passphrase) for passphrase in inputs.split("\n") 
-    if passphrase)
+               if passphrase)
 
 
 if __name__ == "__main__":
