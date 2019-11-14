@@ -9,7 +9,7 @@ import itertools
 def num_steps(offsets: List[int]) -> int:
     """
     Based on a List of offsets.
-    Returns the number of steps required to exist
+    Returns the number of steps required to exit
     the list length. Local offset is increment by +1 
     after jump
     """
@@ -26,7 +26,7 @@ def num_steps(offsets: List[int]) -> int:
         # increment current value by +1 step
         offsets[loc] = curr + 1
         # move location by current value
-        loc = loc + curr
+        loc += curr
       
 
 assert num_steps([0, 3, 0, 1, -3]) == 5
@@ -35,7 +35,7 @@ assert num_steps([0, 3, 0, 1, -3]) == 5
 def num_steps2(offsets: List[int]) -> int:
     """
     Based on a List of offsets.
-    Returns the number of steps required to exist
+    Returns the number of steps required to exit
     the list length. 
     Local offset is increment by +1 if smaller then 3
     otherwise decrease by -1;  after jump
@@ -50,7 +50,7 @@ def num_steps2(offsets: List[int]) -> int:
         loc = max(0, loc)
         if loc >= out:
             return steps
-
+            
         # find current offset value
         curr = offsets[loc]
         if curr < 3:
@@ -60,7 +60,7 @@ def num_steps2(offsets: List[int]) -> int:
             offsets[loc] = curr - 1
         
         # move location by current value
-        loc = loc + curr
+        loc += curr
 
 assert num_steps2([0, 3, 0, 1, -3]) == 10
 
