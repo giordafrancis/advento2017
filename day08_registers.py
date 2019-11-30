@@ -60,7 +60,7 @@ def register_logic(text_in: str) -> Tuple[int, int]:
     highest_value: int = 0
 
     for reg in data:
-        # condition logic i.e "if a < 1"
+        # condition logic i.e "if a <(operator_cond) 1"
         if ops[reg.operator_cond](variables[reg.var_cond],
                                   int(reg.num_cond)):
             # if True compute instructions i.e "b inc(operator_inst) 5"
