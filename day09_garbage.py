@@ -29,10 +29,8 @@ def stream_processing(stream: str) -> Tuple[int, int]:
         elif char == "{":
             depth += 1
             total_score += depth
-        elif char == "}":
-            depth -= 1
-        
-            
+    
+    # NamedTuple is more appropriate
     return total_score, garbage_chars 
 
 
